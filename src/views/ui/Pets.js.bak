@@ -1,0 +1,16 @@
+import PetTables from "../../components/dashboard/PetTable";
+import { Row, Col, Table, Card, CardTitle, CardBody } from "reactstrap";
+import PetList from "../../components/dashboard/PetTablepets";
+
+const Pets = () => {
+  return (
+    <Row>      
+      <Col lg="12">
+        <PetTables />
+        // <PetList />
+      </Col>      
+    </Row>
+  );
+};
+
+export default Pets;
