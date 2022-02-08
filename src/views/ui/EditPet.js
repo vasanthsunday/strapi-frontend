@@ -17,8 +17,11 @@ class EditPet extends Component {
     this.onChangeAge = this.onChangeAge.bind(this);
     this.onChangeSex = this.onChangeSex.bind(this);
     this.updatePetMethod = this.updatePetMethod.bind(this);
-    //this.printStateVal = this.printStateVal.bind(this);
-    //this.findSeleectedFoodPresentInAllFoods = this.findSeleectedFoodPresentInAllFoods.bind(this);
+
+    this.handleChange = this.handleChange.bind(this);
+    this.getPet = this.getPet.bind(this);
+    this.transformIntoArray = this.transformIntoArray.bind(this);
+ 
 
     this.state = {
       currentPet: {
@@ -66,18 +69,21 @@ class EditPet extends Component {
         currentPet: response.data.data.attributes,
         id: response.data.data.id,
       });
-    });
+    },
     PetService.getAllFoods().then((response) => {
       this.setState({
         allfoods: response.data.data,        
       }
        , this.transformIntoArray
       );
-    });
+    })
+    );
   }
 
   transformIntoArray() {
-    console.log('EditPet - transformAllFoodsIntoArray');  
+    console.log('EditPet - transformAllFoodsIntoArray - this.state.allfoods', this.state.allfoods); 
+    console.log('EditPet - transformAllFoodsIntoArray - this.state.currentPet.foods', this.state.currentPet.foods); 
+
     var tempfoodoptions = [];
     if (this.state.allfoods) {
       for (var i = 0; i < this.state.allfoods.length; i++) {
@@ -197,6 +203,7 @@ class EditPet extends Component {
     const { redirect, currentPet } = this.state;
     const { allfoodsarray } = this.state;
     const { selectedfoodarray } = this.state;
+    console.log ('editpet - render',selectedfoodarray)
  
     if (redirect) {
       return <Navigate to="/pet" />;
