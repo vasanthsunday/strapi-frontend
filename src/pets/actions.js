@@ -6,9 +6,20 @@ import {
 } from "./actionTypes";
 import PetsService from "./petsService";
 
-export const createPet =
-    (name, animal, breed, location, age, sex) => async (dispatch) => {
+export const createPet =  (name, animal, breed, location, age, sex, selectedfoodarray) => async (dispatch) => {
         try {
+
+            console.log('actionsjs-createPet-', selectedfoodarray);
+            //const cloneData = Object.assign({}, selectedfoodarray);
+    
+             var foods =selectedfoodarray.reduce(function(result, item, index) {
+                var key = Object.keys(item)[0]; 
+                var value = item[key];            
+                result.push(value);
+                return result;
+              }, []);
+              console.log('actionsj - createPet-cloneData', foods);
+
             const res = await PetsService.create({
                 name,
                 animal,
@@ -16,6 +27,7 @@ export const createPet =
                 location,
                 age,
                 sex,
+                foods
             });
             
             dispatch({

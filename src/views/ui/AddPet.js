@@ -1,8 +1,10 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Link, Navigate } from "react-router-dom";
-import { Card, CardBody, CardTitle, CardSubtitle, Table, Button, Row, Col, Form,FormGroup} from "reactstrap";
+import {  Navigate } from "react-router-dom";
+import { Card, CardBody, CardTitle, CardSubtitle,   Row, Col,Label, Form,FormGroup} from "reactstrap";
+import Select from 'react-select';
 import { createPet } from "../../pets/actions";
+import PetService from "../../pets/petsService";
 
 class AddPet extends Component {
   constructor(props) {
@@ -23,9 +25,60 @@ class AddPet extends Component {
       age: "",
       sex: "",
       redirect: false,
+      foods:"",
+      selectedfoodarray: [],
+      allfoods: "",
+      allfoodsarray: []      
     };
   }
 
+  componentDidMount() { 
+    this.getAllFoods();
+  }
+
+  getAllFoods() {  
+    PetService.getAllFoods().then((response) => {
+      this.setState({
+        allfoods: response.data.data,        
+      }
+       , this.transformIntoArray
+      );
+    });
+  }
+
+  transformIntoArray() {
+    console.log('EditPet - transformAllFoodsIntoArray');  
+    var tempfoodoptions = [];
+    if (this.state.allfoods) {
+      for (var i = 0; i < this.state.allfoods.length; i++) {
+        var tempfoodobj = {};
+        tempfoodobj.value = this.state.allfoods[i].id;
+        tempfoodobj.label = this.state.allfoods[i].attributes.foodname;
+        tempfoodoptions.push(tempfoodobj);
+        this.setState({
+          allfoodsarray: tempfoodoptions
+        }, console.log(this.state.allfoods));
+      }
+    }
+
+
+  }
+
+  handleChange = (selectedfoodarray) => {
+    this.setState({ selectedfoodarray }, () =>
+      console.log(`Option selected:`, this.state.selectedfoodarray)
+    );
+    // var tempselectedfoodarray = this.state.selectedfoodarray;
+    // this.setState(function (prevState) {
+    //   return {
+    //     currentPet: {
+    //       ...prevState.currentPet,
+    //       selectedfoodarray: tempselectedfoodarray,
+    //     },
+    //   };
+    // });
+  };
+  
   onChangeName(e) {
     this.setState({
       name: e.target.value,
@@ -62,9 +115,11 @@ class AddPet extends Component {
     });
   }
 
-  savePet() {
-    const { name, animal, breed, location, age, sex } = this.state;
-    this.props.createPet(name, animal, breed, location, age, sex).then(() => {
+  savePet(e) {
+    e.preventDefault();
+    console.log('AddPet - savePet-', this.state.selectedfoodarray);
+    const { name, animal, breed, location, age, sex,selectedfoodarray } = this.state;
+    this.props.createPet(name, animal, breed, location, age, sex, selectedfoodarray).then(() => {
       this.setState({
         redirect: true,
       });
@@ -73,11 +128,14 @@ class AddPet extends Component {
 
   render() {
     const { redirect } = this.state;
+    const { allfoodsarray } = this.state;
+    const { selectedfoodarray } = this.state;
+
     if (redirect) {
       return <Navigate to="/pet" />;
     }
 
-    return (
+    return ( 
       <Row>
         <Col lg="12">
           <div className="list row">
@@ -166,6 +224,17 @@ class AddPet extends Component {
                       value={this.state.sex}
                       onChange={this.onChangeSex}
                       name="sex"
+                    />
+                  </FormGroup>
+
+                  <FormGroup>
+                    <Label for="petFoods">Select Multiple Pet Food</Label>
+                    <Select
+                      id="petFoods"
+                      isMulti
+                      value={selectedfoodarray}
+                      onChange={this.handleChange}
+                      options={allfoodsarray}
                     />
                   </FormGroup>
 

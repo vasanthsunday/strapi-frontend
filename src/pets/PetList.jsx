@@ -42,7 +42,7 @@ class PetList extends Component {
                         <tbody>
                             {pets &&
                                 pets.map(
-                                    ({ id, attributes }, i) => (
+                                    ({ id, attributes }, ii) => (
                                         <tr key={i}>
                                             <td>{attributes.name}</td>
                                             <td>{attributes.animal}</td>

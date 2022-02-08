@@ -17,9 +17,10 @@ class PetsService {
         
         var objdata ={
             "data": {
-               ...data
+               ...data               
             }
         };
+        console.log('perService - Create - before http', objdata);
         return http.post("/api/pets", objdata);
     }
 

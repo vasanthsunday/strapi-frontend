@@ -1,11 +1,10 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Link, Navigate } from "react-router-dom";
-import { Card, CardBody, CardTitle, CardSubtitle, Table, Button, Row, Col, Form, FormGroup, Label, Input } from "reactstrap";
+import {  Navigate } from "react-router-dom";
+import { Card, CardBody, CardTitle, CardSubtitle,  Row, Col, Form, FormGroup, Label } from "reactstrap";
 import { updatePet } from "../../pets/actions";
 import PetService from "../../pets/petsService";
 import Select from 'react-select';
-
 
 
 class EditPet extends Component {
@@ -18,8 +17,8 @@ class EditPet extends Component {
     this.onChangeAge = this.onChangeAge.bind(this);
     this.onChangeSex = this.onChangeSex.bind(this);
     this.updatePetMethod = this.updatePetMethod.bind(this);
-    this.printStateVal = this.printStateVal.bind(this);
-    this.findSeleectedFoodPresentInAllFoods = this.findSeleectedFoodPresentInAllFoods.bind(this);
+    //this.printStateVal = this.printStateVal.bind(this);
+    //this.findSeleectedFoodPresentInAllFoods = this.findSeleectedFoodPresentInAllFoods.bind(this);
 
     this.state = {
       currentPet: {
@@ -29,8 +28,7 @@ class EditPet extends Component {
         location: "",
         age: "",
         sex: "",
-        foods: "",
-        selectedfoodarray: []        
+        foods: ""        
       },
       allfoods: "",
       allfoodsarray: [],
@@ -52,7 +50,6 @@ class EditPet extends Component {
         },
       };
     });
-
   };
 
   componentDidMount() {
@@ -68,26 +65,19 @@ class EditPet extends Component {
       this.setState({
         currentPet: response.data.data.attributes,
         id: response.data.data.id,
-      }, this.printStateVal);
+      });
     });
     PetService.getAllFoods().then((response) => {
       this.setState({
         allfoods: response.data.data,        
       }
-       , this.printStateValgetAllFoods
+       , this.transformIntoArray
       );
     });
   }
 
-  printStateVal() {
-    console.log('EditPet - printStateVal -  PetService.get');
-    console.log(this.state);
-  }
-
-  printStateValgetAllFoods() {
-    console.log('EditPet - printStateVal - PetService.getAllFoods()');
-    console.log(this.state);
-    console.log(window.location)
+  transformIntoArray() {
+    console.log('EditPet - transformAllFoodsIntoArray');  
     var tempfoodoptions = [];
     if (this.state.allfoods) {
       for (var i = 0; i < this.state.allfoods.length; i++) {
@@ -99,42 +89,21 @@ class EditPet extends Component {
           allfoodsarray: tempfoodoptions
         });
       }
-      console.log('tempfoodoptions');
-      console.log(tempfoodoptions);
     }
 
     var tempfoodCurrentPet = [];
     if (this.state.currentPet.foods.data) {
-      for (var i = 0; i < this.state.currentPet.foods.data.length; i++) {
-        var tempfoodobj = {};
-        tempfoodobj.value =  this.state.currentPet.foods.data[i].id;
-        tempfoodobj.label =  this.state.currentPet.foods.data[i].attributes.foodname;
-        tempfoodCurrentPet.push(tempfoodobj);
+      for (var j = 0; j < this.state.currentPet.foods.data.length; j++) {
+        var tempfoodobj2 = {};
+        tempfoodobj2.value =  this.state.currentPet.foods.data[j].id;
+        tempfoodobj2.label =  this.state.currentPet.foods.data[j].attributes.foodname;
+        tempfoodCurrentPet.push(tempfoodobj2);
         this.setState({
           selectedfoodarray: tempfoodCurrentPet
         });
       }
-      console.log('tempfoodCurrentPet');
-      console.log(tempfoodCurrentPet);
     }
   }
-
-  findSeleectedFoodPresentInAllFoods(id) {
-    console.log(id);
-    if (this.state.currentPet.foods.data) {
-      this.state.currentPet.foods.data.find(element => {
-        console.log(element);
-        if (element.id === id) {
-          console.log('true');
-          return true;
-        }
-        console.log('---false');
-        return false;
-      });
-    }
-    return false;
-  }
-
 
   updatePetMethod(e) {
     e.preventDefault();
@@ -149,7 +118,6 @@ class EditPet extends Component {
           redirect: true,
         });
       });
-
   }
 
   onChangeName(e) {
@@ -243,9 +211,7 @@ class EditPet extends Component {
                 <CardTitle tag="h5" >Update</CardTitle>
                 <CardSubtitle className="mb-2 text-muted" tag="h6">
                   Update a pet here
-                </CardSubtitle>
-
-               
+                </CardSubtitle>               
 
                 <Form onSubmit={this.updatePetMethod} >
                   <FormGroup>
@@ -327,7 +293,6 @@ class EditPet extends Component {
                   </FormGroup>
 
                   <FormGroup>
-
                     <Label for="petFoods">Select Multiple Pet Food</Label>
                     <Select
                       id="petFoods"
@@ -336,7 +301,6 @@ class EditPet extends Component {
                       onChange={this.handleChange}
                       options={allfoodsarray}
                     />
-
                   </FormGroup>
 
                   <FormGroup>

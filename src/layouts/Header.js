@@ -1,12 +1,9 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import {
   Navbar,
   Collapse,
-  Nav,
-  NavItem,
-  NavbarBrand,
-  UncontrolledDropdown,
+  Nav,  
+  NavbarBrand,  
   DropdownToggle,
   DropdownMenu,
   DropdownItem,
