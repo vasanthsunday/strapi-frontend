@@ -2,7 +2,7 @@ import http from "../http";
 
 class PetsService {
     getAll() {
-        return http.get("/api/pets");
+        return http.get("/api/pets?populate=*");
     }
 
     getAllFoods() {

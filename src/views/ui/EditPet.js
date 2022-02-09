@@ -1,10 +1,11 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import {  Navigate } from "react-router-dom";
-import { Card, CardBody, CardTitle, CardSubtitle,  Row, Col, Form, FormGroup, Label } from "reactstrap";
+import { Card, CardBody, CardImg, CardTitle,Input, CardSubtitle,  Row, Col, Form, FormGroup, Label } from "reactstrap";
 import { updatePet } from "../../pets/actions";
 import PetService from "../../pets/petsService";
 import Select from 'react-select';
+import axios from "axios";
 
 
 class EditPet extends Component {
@@ -80,6 +81,7 @@ class EditPet extends Component {
     );
   }
 
+
   transformIntoArray() {
     console.log('EditPet - transformAllFoodsIntoArray - this.state.allfoods', this.state.allfoods); 
     console.log('EditPet - transformAllFoodsIntoArray - this.state.currentPet.foods', this.state.currentPet.foods); 
@@ -108,15 +110,18 @@ class EditPet extends Component {
           selectedfoodarray: tempfoodCurrentPet
         });
       }
+
+      console.log('transformIntoArray() - this.state', this.state)
     }
   }
 
   updatePetMethod(e) {
     e.preventDefault();
     console.log('EditPet - updatePetMethod');
-    console.log(window.location);    
-   
+    console.log(window.location);       
     console.log('thisstate->',this.state);
+
+    delete this.state.currentPet.headerimage;
     this.props
       .updatePet(this.state.id, this.state.currentPet, this.state.selectedfoodarray)
       .then(() => {
@@ -202,8 +207,32 @@ class EditPet extends Component {
   render() {
     const { redirect, currentPet } = this.state;
     const { allfoodsarray } = this.state;
-    const { selectedfoodarray } = this.state;
-    console.log ('editpet - render',selectedfoodarray)
+    const { selectedfoodarray } = this.state;    
+    var headerimageurl = "";
+    if (currentPet.headerimage) {
+      const {headerimage: {data}}  = currentPet;
+      console.log('data',data );
+      if(data)
+      {
+        if (data.attributes)
+        {
+          const {attributes:{formats: {thumbnail: {url}}}} = data;
+          headerimageurl = 'http://localhost:1337' + url;
+          console.log('render - headerimageurl', headerimageurl);
+        }
+        else
+        {
+          console.log('no attributes');
+        }
+      }
+    }
+
+    
+       
+    
+    //
+
+    //console.log ('editpet - render',selectedfoodarray)
  
     if (redirect) {
       return <Navigate to="/pet" />;
@@ -218,9 +247,17 @@ class EditPet extends Component {
                 <CardTitle tag="h5" >Update</CardTitle>
                 <CardSubtitle className="mb-2 text-muted" tag="h6">
                   Update a pet here
-                </CardSubtitle>               
+                </CardSubtitle>  
 
                 <Form onSubmit={this.updatePetMethod} >
+
+                <FormGroup>        
+                  <div>
+                <label htmlFor="headerimage">HeaderImage</label>        
+                </div>
+                   { headerimageurl && <img src={headerimageurl} alt="Header Image" />}                 
+                  </FormGroup>
+
                   <FormGroup>
                     <label htmlFor="name">Name</label>
                     <input

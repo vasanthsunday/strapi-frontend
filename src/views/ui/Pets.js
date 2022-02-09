@@ -17,6 +17,40 @@ class PetList extends Component {
 
   render() {
     const { pets } = this.props;
+    
+    let imageslist = [];
+    
+    if(pets.length>0)
+    {
+      for(let k=0; k < pets.length; k++)
+      {
+        var pet = pets[k];
+        var headerimageurl = "";    
+        
+        const {headerimage: {data}}  = pet.attributes;
+        console.log('data',data );
+        if(data)
+        {
+          if (data.attributes)
+          {
+            const {attributes:{formats: {thumbnail: {url}}}} = data;
+            headerimageurl = 'http://localhost:1337' + url;
+            imageslist.push(headerimageurl);
+            console.log('render - headerimageurl', headerimageurl);
+            imageslist[k] = headerimageurl;
+          }
+          else{
+            imageslist[k] = "";
+          }
+        }
+        else
+        {
+            imageslist[k] = "";
+        }   
+      }
+      console.log('imageslist',imageslist);
+  }
+   
 
     return (
       <Row>
@@ -36,6 +70,8 @@ class PetList extends Component {
                 <Table className="no-wrap mt-3 align-middle" responsive borderless>
                   <thead>
                     <tr>
+                    <th>Id</th>
+                    <th>Image</th>
                       <th>Name</th>
                       <th>Animal</th>
                       <th>Breed</th>
@@ -49,7 +85,10 @@ class PetList extends Component {
                     {pets &&
                       pets.map(
                         ({ id, attributes }, i) => (
+
                           <tr key={i} className="border-top">
+                            <td>{id}</td>
+                            <td>{ imageslist[i] && <img  src={imageslist[i]} alt="Header Image" width="50" height="50" />}    </td> 
                             <td>{attributes.name}</td>
                             <td>{attributes.animal}</td>
                             <td>{attributes.breed}</td>
