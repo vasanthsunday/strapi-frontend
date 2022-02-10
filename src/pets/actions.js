@@ -42,11 +42,16 @@ export const createPet =  (name, animal, breed, location, age, sex, selectedfood
 
 export const retrievePets = () => async (dispatch) => {
     try {
-        const res = await PetsService.getAll();        
-        dispatch({
-            type: RETRIEVE_PETS,
-            payload: res.data.data,
-        });
+        const res = await PetsService.getAll().then((response) => {
+        console.log('actions.js-retrievepets',response );
+            dispatch({
+                type: RETRIEVE_PETS,
+                payload: response.data.data,
+            });
+
+          });   
+             
+        
     } catch (err) {
         console.log(err);
     }

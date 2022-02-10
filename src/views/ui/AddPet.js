@@ -117,6 +117,7 @@ class AddPet extends Component {
 
   savePet(e) {
     e.preventDefault();
+    console.log('addpet - savepet',this.state);
     console.log('AddPet - savePet-', this.state.selectedfoodarray);
     const { name, animal, breed, location, age, sex,selectedfoodarray } = this.state;
     this.props.createPet(name, animal, breed, location, age, sex, selectedfoodarray).then(() => {

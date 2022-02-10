@@ -19,34 +19,48 @@ class PetList extends Component {
     const { pets } = this.props;
     
     let imageslist = [];
-    
+    console.log('pets.js-render-',pets);
     if(pets.length>0)
     {
       for(let k=0; k < pets.length; k++)
       {
         var pet = pets[k];
         var headerimageurl = "";    
+        console.log('each pet',k,pet);
         
-        const {headerimage: {data}}  = pet.attributes;
-        console.log('data',data );
-        if(data)
+        //const {headerimage: {data}}  = pet.attributes;
+        const {headerimage}  = pet.attributes;
+        console.log('headerimage',headerimage);
+
+        if(headerimage && headerimage.data  !== null )
         {
-          if (data.attributes)
-          {
-            const {attributes:{formats: {thumbnail: {url}}}} = data;
-            headerimageurl = 'http://localhost:1337' + url;
-            imageslist.push(headerimageurl);
-            console.log('render - headerimageurl', headerimageurl);
-            imageslist[k] = headerimageurl;
-          }
-          else{
-            imageslist[k] = "";
-          }
+          console.log('inside null check');
+            const {data}  = headerimage;
+            
+            if(data)
+            {
+              console.log('data',data );
+              if (data.attributes)
+              {
+                const {attributes:{formats: {thumbnail: {url}}}} = data;
+                headerimageurl = 'http://localhost:1337' + url;
+                imageslist.push(headerimageurl);
+                console.log('render - headerimageurl', headerimageurl);
+                imageslist[k] = headerimageurl;
+              }
+              else{
+                imageslist[k] = "";
+              }
+            }
+            else
+            {
+                imageslist[k] = "";
+            }  
         }
         else
         {
-            imageslist[k] = "";
-        }   
+          imageslist[k] = "";
+        } 
       }
       console.log('imageslist',imageslist);
   }
