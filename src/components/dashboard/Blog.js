@@ -7,6 +7,7 @@ import {
   CardTitle,
   Button,
 } from "reactstrap";
+import { Link, useLocation } from "react-router-dom";
 
 const Blog = (props) => {
   return (
@@ -16,7 +17,8 @@ const Blog = (props) => {
         <CardTitle tag="h5">{props.title}</CardTitle>
         <CardSubtitle>{props.subtitle}</CardSubtitle>
         <CardText className="mt-3">{props.text}</CardText>
-        <Button color={props.color}>Read More</Button>
+        <Link to='/pagedesigner'><Button color='{props.color}' >Select</Button></Link>
+        
       </CardBody>
     </Card>
   );

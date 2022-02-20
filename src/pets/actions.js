@@ -94,3 +94,15 @@ export const deletePet = (id) => async (dispatch) => {
         console.log(err);
     }
 };
+
+
+
+export const pageDesignerAction =  (name, animal, breed, location, age, sex, selectedfoodarray) => async (dispatch) => {
+    try {
+
+        console.log('pageDesignerAction-');
+        
+    } catch (err) {
+        return Promise.reject(err);
+    }
+};

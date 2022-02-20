@@ -23,6 +23,16 @@ const navigation = [
     title: "Pet",
     href: "/pet",
     icon: "bi bi-table",
+  },
+  {
+    title: "Template Selection",
+    href: "/templateselection",
+    icon: "bi bi-grid-fill",
+  },  
+  {
+    title: "Page Designer",
+    href: "/pagedesigner",
+    icon: "bi bi-layout-text-window-reverse",
   },  
   {
     title: "Alert",

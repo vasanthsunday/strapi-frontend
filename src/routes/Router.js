@@ -21,6 +21,11 @@ const Breadcrumbs = lazy(() => import("../views/ui/Breadcrumbs"));
 const Pets = lazy(() => import("../views/ui/Pets"));
 const AddPet = lazy(() => import("../views/ui/AddPet"));
 const EditPet = lazy(() => import("../views/ui/EditPet"));
+
+const PageDesigner = lazy(() => import("../views/ui/PageDesigner"));
+
+
+const TemplateSelection = lazy(() => import("../views/ui/TemplateSelection"));
 /*****Routes******/
 
 const ThemeRoutes = [
@@ -36,6 +41,8 @@ const ThemeRoutes = [
       { path: "/pet", exact: true, element: <Pets /> },
       { path: "/add-pet", exact: true, element: <AddPet /> },
       { path: "/edit-pet/:id", exact: true, element: <EditPet /> },
+      { path: "/templateselection", exact: true, element: <TemplateSelection /> },
+      { path: "/pagedesigner", exact: true, element: <PageDesigner /> },
 
       { path: "/starter", exact: true, element: <Starter /> },
       { path: "/about", exact: true, element: <About /> },
